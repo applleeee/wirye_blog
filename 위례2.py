@@ -1,10 +1,8 @@
-from textwrap import fill
-from turtle import color
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
-import datetime
+from datetime import datetime
 
 # 키워드 기존 통계파일에서 불러오기
 wb = load_workbook("위례블로그 통계(국어,수학).xlsx")
@@ -61,7 +59,9 @@ def input_result(keyword, sheet):
             title.append("게시물 없음")
 
     # 오늘날짜 입력
-    sheet["g1"] = str(datetime.datetime.today()) 
+    d = datetime.now()
+    only_date = d.date()
+    sheet["g1"] = str(only_date) 
 
     # 순위, 제목 입력
     for index, cell in enumerate(sheet.iter_rows(min_col=5, min_row=2)):
@@ -69,16 +69,30 @@ def input_result(keyword, sheet):
         cell[2].value = rank[index]
         cell[5].value = title[index]
 
-    wb.save("blog_keyword.xlsx")
+    wb.save("위례블로그 통계(국어,수학).xlsx")
 
 
 input_result(ko_keywords, ws1)
 input_result(math_keywords, ws2)
 
 
-for a in ws1.iter_rows(min_col=5,min_row=2):
-    if type(a[2].value) == str or int(a[2].value) > 5:
-        a[0].fill = PatternFill(fgColor="FF6D6D", fill_type="solid")
-    elif int(a[2].value) <= 5:
-        a[0].fill = PatternFill(fgColor="D9E1F2", fill_type="solid")
-wb.save("blog_keyword.xlsx")
+
+# 1페이지 이상 키워드 빨간색 표시
+def color_change(sheet):
+    for a in sheet.iter_rows(min_col=5,min_row=2):
+        if str(a[2].value) == "순위없음" or int(a[2].value) > 5:
+            for red in range(0,6):
+                a[red].fill = PatternFill(fgColor="FF6D6D", fill_type="solid") # 빨강
+
+        elif int(a[2].value) <= 5:
+            for blue in range(0,6):
+                a[blue].fill = PatternFill(fgColor="D9E1F2", fill_type="solid") # 파랑
+
+
+color_change(ws1)
+color_change(ws2)
+
+
+
+
+wb.save("위례블로그 통계(국어,수학).xlsx")
