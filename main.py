@@ -43,7 +43,7 @@ def input_result(keyword, sheet):
         elem.click()
         soup = BeautifulSoup(browser.page_source, "lxml")
 
-        blog = soup.find("a", {"href": "https://blog.naver.com/wredusky"})
+        blog = soup.find("a", {"href": "찾을 주소(블로그 주소)"})
         if blog:
             print("검색중")
             li = blog.find_parent("li")
