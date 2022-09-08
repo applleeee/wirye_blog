@@ -27,7 +27,7 @@ for word in ws2.iter_rows(min_row=2, min_col=5):
 
 url = "https://search.naver.com/search.naver?where=view&sm=tab_jum&query="
 
-browser = webdriver.Chrome("C:/Users/user/Desktop/코딩/wirye_blog/chromedriver.exe")
+browser = webdriver.Chrome("chromedriver.exe")
 browser.get(url)
 
 
